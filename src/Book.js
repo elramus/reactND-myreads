@@ -33,6 +33,7 @@ export default class Book extends Component {
             </div>
           </div>
           <div className="book-title">{book.title}</div>
+          {/* If no author, fall back to publisher, if no publisher, display 'author unknown' */}
           <div className="book-authors">{book.authors ? book.authors.join(', ') : book.publisher ? book.publisher : 'Author unknown'}</div>
         </div>
     )
