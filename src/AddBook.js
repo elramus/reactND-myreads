@@ -31,7 +31,12 @@ export default class AddBook extends Component {
   }
 
   receiveResults = (results) => {
-    // TODO: Integrate results with books already on shelves
+    // if we got results, give them the shelf property
+    results.length && results.forEach(r => {
+      this.props.books.forEach(b => {
+        r.id === b.id ? r.shelf = b.shelf : r.shelf = 'none'
+      })
+    })
     this.setState({ results })
   }
 
@@ -48,6 +53,7 @@ export default class AddBook extends Component {
 
     return (
       <div className="search-books">
+
         <div className="search-books-bar">
           <Link to="/" className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
@@ -56,12 +62,15 @@ export default class AddBook extends Component {
             </CSSTransition>
           </div>
         </div>
+
         <div className="search-books-results">
           {query.length ? (
             results.length ? (
               <ol className="books-grid">
                 {results.map(book => (
-                  <Book key={book.id} shelves={shelves} book={book} updateBook={updateBook} />
+                  <li key={book.id}>
+                    <Book book={book} shelves={shelves} updateBook={updateBook} />
+                  </li>
                 ))}
               </ol>
             ) : !isSearching && (
@@ -74,12 +83,14 @@ export default class AddBook extends Component {
             </div>
           )}
         </div>
+
       </div>
     )
   }
 }
 
 AddBook.propTypes = {
+  books: PropTypes.array.isRequired,
   shelves: PropTypes.array.isRequired,
   updateBook: PropTypes.func.isRequired
 }
