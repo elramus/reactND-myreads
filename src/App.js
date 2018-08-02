@@ -66,7 +66,7 @@ export default class App extends React.Component {
         <Route exact path="/" render={() => (
           <Dashboard books={books} shelves={shelves} updateBook={this.updateBook} />
         )} />
-        <Route path="/add" render={() => (
+        <Route path="/search" render={() => (
           <AddBook books={books} shelves={shelves} updateBook={this.updateBook} />
         )} />
       </div>
