@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import * as BooksAPI from './BooksAPI'
 import SearchResults from './SearchResults'
-// import Book from './Book'
 
 export default class AddBook extends Component {
   state = {
@@ -32,11 +31,11 @@ export default class AddBook extends Component {
   }
 
   receiveResults = (results) => {
-    console.log(this.props.books)
-    // if we got results, give them the appropriate shelf property
+    // If we got results, look for any matches with existing books
+    // and if so, set shelf property.
     results.length && results.forEach(r => {
       this.props.books.forEach(b => {
-        r.id === b.id ? r.shelf = b.shelf : r.shelf = 'none'
+        r.id === b.id && (r.shelf = b.shelf)
       })
     })
     this.setState({ results })
