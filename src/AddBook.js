@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import * as BooksAPI from './BooksAPI'
-import Book from './Book'
+import SearchResults from './SearchResults'
+// import Book from './Book'
 
 export default class AddBook extends Component {
   state = {
@@ -19,7 +20,7 @@ export default class AddBook extends Component {
     const query = e.target.value
     this.setState({ query })
     // no need to send empty query to API
-    query.length && this.search(e.target.value)
+    query.length && this.search(query)
   }
 
   search = (query) => {
@@ -31,7 +32,8 @@ export default class AddBook extends Component {
   }
 
   receiveResults = (results) => {
-    // if we got results, give them the shelf property
+    console.log(this.props.books)
+    // if we got results, give them the appropriate shelf property
     results.length && results.forEach(r => {
       this.props.books.forEach(b => {
         r.id === b.id ? r.shelf = b.shelf : r.shelf = 'none'
@@ -63,26 +65,13 @@ export default class AddBook extends Component {
           </div>
         </div>
 
-        <div className="search-books-results">
-          {query.length ? (
-            results.length ? (
-              <ol className="books-grid">
-                {results.map(book => (
-                  <li key={book.id}>
-                    <Book book={book} shelves={shelves} updateBook={updateBook} />
-                  </li>
-                ))}
-              </ol>
-            ) : !isSearching && (
-              <h3>No results found from '{query}'</h3>
-            )
-          ) : (
-            <div className='search-books-hint'>
-              <h3>Hint: Trying looking for one of these keywords</h3>
-              <p>'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS'</p>
-            </div>
-          )}
-        </div>
+        <SearchResults
+          isSearching={isSearching}
+          query={query}
+          results={results}
+          shelves={shelves}
+          updateBook={updateBook}
+        />
 
       </div>
     )
